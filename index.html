@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medisync - Store Management Dashboard</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <script type="module" src="script.js" defer></script>
+</head>
+<body class="flex min-h-screen">
+    <div id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 ease-in-out bg-gray-900 w-64 p-5 shadow-2xl z-50 flex flex-col">
+        <div class="text-2xl font-bold text-blue-400 mb-8 flex items-center">
+            <svg class="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10m-4-2h18m-4 4h4m-4-8h4m-4-8h4m0 0H7a2 2 0 00-2 2v10a2 2 0 002 2h4m-4 4h4m-4-8h4m-4-8h4"></path></svg>
+            Medisync
+        </div>
+        <nav class="flex-grow space-y-2">
+            <a href="#" id="nav-dashboard" class="nav-item flex items-center p-3 text-sm font-medium text-gray-400 rounded-lg transition hover:bg-gray-800" onclick="showSection('dashboard')">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                Dashboard
+            </a>
+            <a href="#inventory" id="nav-inventory" class="nav-item flex items-center p-3 text-sm font-medium text-gray-400 rounded-lg transition hover:bg-gray-800" onclick="showSection('inventory')">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                Inventory
+            </a>
+            <a href="#sales" id="nav-sales" class="nav-item flex items-center p-3 text-sm font-medium text-gray-400 rounded-lg transition hover:bg-gray-800" onclick="showSection('sales')">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v3m-3-3h.01M9 17h.01M9 14h.01M12 14h.01M15 14h.01M12 11h.01M15 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                Sales & Billing
+            </a>
+            <a href="#reports" id="nav-reports" class="nav-item flex items-center p-3 text-sm font-medium text-gray-400 rounded-lg transition hover:bg-gray-800" onclick="showSection('reports')">
+                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                Reports
+            </a>
+        </nav>
+        <div class="mt-auto pt-4 border-t border-gray-700">
+            <p class="text-xs text-gray-500">User ID: <span id="user-id">Loading...</span></p>
+        </div>
+    </div>
+
+    <div class="flex-1 overflow-x-hidden overflow-y-auto">
+        <header class="bg-gray-800 shadow-md p-4 md:p-6 flex justify-between items-center sticky top-0 z-40 border-b border-gray-700">
+            <button id="sidebar-toggle" class="md:hidden text-gray-400 hover:text-blue-400 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+            <h1 class="text-2xl font-semibold text-gray-100">Medical Store Management</h1>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-400 text-sm hidden sm:inline">Welcome back!</span>
+                <div class="w-8 h-8 rounded-full bg-blue-700 flex items-center justify-center text-white font-bold text-sm">U</div>
+            </div>
+        </header>
+
+        <main class="p-4 md:p-8">
+            <section id="dashboard-section" class="space-y-8">
+                <h2 class="text-3xl font-bold text-gray-100">Dashboard Overview</h2>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition hover:shadow-xl hover:bg-gray-700">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-400">Total Products</p>
+                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2zm12 8l-2 2-2-2m4 0h-4"></path></svg>
+                        </div>
+                        <p id="total-products" class="text-4xl font-extrabold text-gray-100 mt-2">0</p>
+                    </div>
+
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition hover:shadow-xl hover:bg-gray-700">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-400">Low Stock Alerts</p>
+                            <svg class="w-6 h-6 text-red-500 low-stock-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.395 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        </div>
+                        <p id="low-stock-count" class="text-4xl font-extrabold text-red-500 mt-2">0</p>
+                    </div>
+
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition hover:shadow-xl hover:bg-gray-700">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-400">Total Sales (Today)</p>
+                            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V9m0 3v3"></path></svg>
+                        </div>
+                        <p class="text-4xl font-extrabold text-green-400 mt-2">₹4,500</p>
+                    </div>
+
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition hover:shadow-xl hover:bg-gray-700">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-400">Expiring Soon</p>
+                            <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h.01M9 14h.01M9 17h.01M12 14h.01M12 17h.01M15 11h.01M15 14h.01M15 17h.01M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <p id="expiring-count" class="text-4xl font-extrabold text-yellow-400 mt-2">2</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-4 text-gray-100">Monthly Sales Trend (₹)</h3>
+                    <div id="sales-chart-container" class="h-64 flex items-end justify-around border-b border-gray-600 relative px-4">
+                        </div>
+                    <div class="text-xs text-center text-gray-400 pt-2">Monthly Revenue in Rupees (₹)</div>
+                </div>
+            </section>
+
+            <section id="inventory-section" class="space-y-6 hidden">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-3xl font-bold text-gray-100">Current Inventory Stock</h2>
+                    <button onclick="document.getElementById('add-item-modal').classList.remove('hidden')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        Add New Product
+                    </button>
+                </div>
+
+                <div id="loading-indicator" class="text-center text-gray-400 py-10">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+                    <p class="mt-2">Loading real-time inventory...</p>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl shadow-lg overflow-x-auto border border-gray-700">
+                    <table class="min-w-full divide-y divide-gray-700">
+                        <thead class="bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Product Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Batch/ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Expiry Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Stock</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Price (₹)</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventory-list" class="bg-gray-800 divide-y divide-gray-700">
+                            </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="sales-section" class="space-y-6 hidden">
+                <h2 class="text-3xl font-bold text-gray-100">Sales & Billing</h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-4">
+                        <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-100">New Bill: Product Entry</h3>
+                            <div class="mb-4">
+                                <label for="product-search" class="sr-only">Search Product</label>
+                                <input type="text" id="product-search" oninput="searchInventory(this.value)" placeholder="Search product name or batch ID..." class="w-full border-gray-600 bg-gray-700 text-gray-100 rounded-lg shadow-sm p-3 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                            </div>
+
+                            <div class="max-h-60 overflow-y-auto rounded-lg border border-gray-700">
+                                <table class="min-w-full divide-y divide-gray-700">
+                                    <thead class="bg-gray-700 sticky top-0">
+                                        <tr>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Product</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Stock</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Price</th>
+                                            <th class="px-4 py-2 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sales-search-results" class="bg-gray-800 divide-y divide-gray-700">
+                                        <tr><td colspan="4" class="p-4 text-center text-gray-400">Start typing to search available products.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 p-5 rounded-xl shadow-lg border border-gray-700">
+                            <h3 class="text-xl font-semibold mb-4 text-gray-100">Items on Bill</h3>
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-700">
+                                    <thead class="bg-gray-700">
+                                        <tr>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Item</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Qty</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Unit Price</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total</th>
+                                            <th class="px-4 py-2 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="current-bill-list" class="bg-gray-800 divide-y divide-gray-700">
+                                        <tr id="empty-bill-row"><td colspan="5" class="p-4 text-center text-gray-400">No items added to the bill yet.</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-1 space-y-4">
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 sticky top-24">
+                            <h3 class="text-2xl font-bold mb-5 text-blue-400">Bill Summary</h3>
+                            <div class="space-y-3 text-gray-300">
+                                <div class="flex justify-between border-b border-gray-700 pb-2">
+                                    <span>Subtotal:</span>
+                                    <span id="bill-subtotal" class="font-medium">₹0.00</span>
+                                </div>
+                                <div class="flex justify-between border-b border-gray-700 pb-2">
+                                    <span>Tax (GST 5%):</span>
+                                    <span id="bill-tax" class="font-medium">₹0.00</span>
+                                </div>
+                                <div class="flex justify-between pt-3 text-xl font-extrabold text-gray-100">
+                                    <span>GRAND TOTAL:</span>
+                                    <span id="bill-grand-total" class="text-green-400">₹0.00</span>
+                                </div>
+                            </div>
+                            <div class="mt-8 space-y-3">
+                                <button onclick="handleCheckout()" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg shadow-md transition duration-200 flex items-center justify-center">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m4 2h10a2 2 0 002-2v-6a2 2 0 00-2-2H9.01M9 17a2 2 0 002 2h2a2 2 0 002-2m-2-4v4"></path></svg>
+                                    Process Payment
+                                </button>
+                                <button onclick="currentBill = []; renderBill();" class="w-full bg-red-800 hover:bg-red-700 text-red-300 font-medium py-3 rounded-lg transition duration-200">
+                                    Clear Bill
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="reports-section" class="space-y-6 hidden">
+                <h2 class="text-3xl font-bold text-gray-100">Inventory & Financial Reports</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition hover:shadow-xl hover:bg-gray-700">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-400">Total Inventory Value</p>
+                            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0v6m0-6H9m-1 8h.01M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <p id="report-total-value" class="text-4xl font-extrabold text-green-400 mt-2">₹0.00</p>
+                        <p class="text-xs text-gray-500 mt-1">Estimated cost of all current stock</p>
+                    </div>
+
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition hover:shadow-xl hover:bg-gray-700">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-400">Total Units in Stock</p>
+                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7v10m0 0a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2zM9 11h.01M15 11h.01M9 15h.01M15 15h.01"></path></svg>
+                        </div>
+                        <p id="report-total-stock" class="text-4xl font-extrabold text-gray-100 mt-2">0</p>
+                        <p class="text-xs text-gray-500 mt-1">Total quantity of all products</p>
+                    </div>
+
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-700 transition hover:shadow-xl hover:bg-gray-700">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm font-medium text-gray-400">High-Value Products (₹500+)</p>
+                            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V9m0 3v3"></path></svg>
+                        </div>
+                        <p id="report-high-value" class="text-4xl font-extrabold text-purple-400 mt-2">0</p>
+                        <p class="text-xs text-gray-500 mt-1">Products with unit price over ₹500</p>
+                    </div>
+                </div>
+
+                <div class="bg-gray-800 rounded-xl shadow-lg overflow-x-auto border border-gray-700">
+                    <h3 class="text-xl font-semibold p-4 text-gray-100 border-b border-gray-700">Detailed Stock Valuation</h3>
+                    <table class="min-w-full divide-y divide-gray-700">
+                        <thead class="bg-gray-700">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Product Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Unit Price (₹)</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Current Stock</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-300 uppercase tracking-wider">Total Stock Value (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report-valuation-list" class="bg-gray-800 divide-y divide-gray-700">
+                            <tr><td colspan="4" class="p-4 text-center text-gray-400">Generating report...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="message-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-[99]">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-2xl max-w-sm w-full transform transition-all duration-300 scale-100 border border-gray-700">
+            <h3 id="message-title" class="text-xl font-bold mb-3 text-gray-100">Alert</h3>
+            <p id="message-content" class="text-gray-300 mb-4">Content goes here.</p>
+            <button onclick="document.getElementById('message-modal').classList.add('hidden')" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">OK</button>
+        </div>
+    </div>
+
+    <div id="add-item-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-[90]">
+        <div class="bg-gray-800 p-6 rounded-xl shadow-2xl max-w-lg w-full transform transition-all duration-300 scale-100 border border-gray-700">
+            <h3 class="text-2xl font-bold mb-5 text-gray-100">Add New Inventory Item</h3>
+            <form id="add-item-form" onsubmit="handleAddItem(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="mb-4">
+                        <label for="product-name" class="block text-sm font-medium text-gray-300">Product Name</label>
+                        <input type="text" id="product-name" required class="mt-1 block w-full border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm p-2 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                    <div class="mb-4">
+                        <label for="batch-id" class="block text-sm font-medium text-gray-300">Batch/Lot ID</label>
+                        <input type="text" id="batch-id" required class="mt-1 block w-full border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm p-2 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                    <div class="mb-4">
+                        <label for="expiry-date" class="block text-sm font-medium text-gray-300">Expiry Date</label>
+                        <input type="date" id="expiry-date" required class="mt-1 block w-full border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm p-2 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                    <div class="mb-4">
+                        <label for="stock" class="block text-sm font-medium text-gray-300">Current Stock</label>
+                        <input type="number" id="stock" required min="1" class="mt-1 block w-full border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm p-2 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                    <div class="mb-4">
+                        <label for="price" class="block text-sm font-medium text-gray-300">Unit Price (₹)</label>
+                        <input type="number" id="price" required min="0.01" step="0.01" class="mt-1 block w-full border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm p-2 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" onclick="document.getElementById('add-item-modal').classList.add('hidden')" class="px-4 py-2 text-gray-300 bg-gray-600 rounded-lg hover:bg-gray-700 transition">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition shadow-md">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="edit-item-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-[90]">
+        <div class="bg-gray-800 p-6 rounded-xl shadow-2xl max-w-lg w-full transform transition-all duration-300 scale-100 border border-gray-700">
+            <h3 class="text-2xl font-bold mb-5 text-gray-100">Edit Inventory Item</h3>
+            <form id="edit-item-form" onsubmit="handleEditItem(event)">
+                <input type="hidden" id="edit-id"> <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="mb-4 md:col-span-2">
+                        <label for="edit-product-name" class="block text-sm font-medium text-gray-300">Product Name</label>
+                        <input type="text" id="edit-product-name" required class="mt-1 block w-full border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm p-2 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                    <div class="mb-4">
+                        <label for="edit-batch-id" class="block text-sm font-medium text-gray-300">Batch/Lot ID</label>
+                        <input type="text" id="edit-batch-id" required class="mt-1 block w-full border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm p-2 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                    <div class="mb-4">
+                        <label for="edit-expiry-date" class="block text-sm font-medium text-gray-300">Expiry Date</label>
+                        <input type="date" id="edit-expiry-date" required class="mt-1 block w-full border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm p-2 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                    <div class="mb-4">
+                        <label for="edit-stock" class="block text-sm font-medium text-gray-300">Current Stock</label>
+                        <input type="number" id="edit-stock" required min="1" class="mt-1 block w-full border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm p-2 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                    <div class="mb-4">
+                        <label for="edit-price" class="block text-sm font-medium text-gray-300">Unit Price (₹)</label>
+                        <input type="number" id="edit-price" required min="0.01" step="0.01" class="mt-1 block w-full border-gray-600 bg-gray-700 text-gray-100 rounded-md shadow-sm p-2 border focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" onclick="document.getElementById('edit-item-modal').classList.add('hidden')" class="px-4 py-2 text-gray-300 bg-gray-600 rounded-lg hover:bg-gray-700 transition">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

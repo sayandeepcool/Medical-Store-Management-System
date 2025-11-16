@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+/* Apply Inter font to the body */
+body {
+    font-family: 'Inter', sans-serif;
+    /* This overrides the Tailwind utility class applied in index.html for a fixed background */
+    background-color: #1a202c; 
+}
+
+/* Custom scrollbar for aesthetics (Dark Mode) */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background-color: #3b82f6; border-radius: 10px; }
+::-webkit-scrollbar-track { background-color: #2d3748; }
+
+/* Icon for low stock */
+.low-stock-icon {
+    /* Subtle red drop shadow for visibility in dark mode */
+    filter: drop-shadow(0 0 1px #ef4444);
+}
+
+/* Ensure JavaScript-rendered table rows maintain dark mode transitions */
+#inventory-list tr, #sales-search-results tr, #current-bill-list tr, #report-valuation-list tr {
+    transition: background-color 150ms ease-in-out;
+}
